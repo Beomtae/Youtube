@@ -1,13 +1,30 @@
 import express from "express";
 
-const PORT = 4000;
+const PORT = 4000; // port 4000번
 
-const app = express();
+const app = express(); //express 실행
 
-const handelHome = (req, res) => {
-  return res.end();
+const routerLogger = (req, res, next) => {
+  console.log("PATH:", req.path);
+  next();
 };
-app.get("/", handelHome);
+
+const methodLogger = (req, res, next) => {
+  console.log("Method:", req.method);
+  next();
+};
+
+const home = (req, res) => {
+  return res.send("hello");
+};
+
+const login = (req, res) => {
+  return res.send("login");
+};
+
+app.use(methodLogger, routerLogger);
+app.get("/", home);
+app.get("/login", login);
 
 const handleListening = () =>
   console.log(`Server listening on port http://localhost:${PORT}`);
