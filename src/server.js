@@ -1,18 +1,12 @@
 import express from "express";
 
-const PORT = 4000; // port 4000번
+import morgan from "morgan";
 
-const app = express(); //express 실행
+const PORT = 4000;
 
-const routerLogger = (req, res, next) => {
-  console.log("PATH:", req.path);
-  next();
-};
+const app = express();
 
-const methodLogger = (req, res, next) => {
-  console.log("Method:", req.method);
-  next();
-};
+const logger = morgan("dev");
 
 const home = (req, res) => {
   return res.send("hello");
@@ -22,9 +16,9 @@ const login = (req, res) => {
   return res.send("login");
 };
 
-app.use(methodLogger, routerLogger);
+app.use(logger);
 app.get("/", home);
-app.get("/login", login);
+app.get("/login", home);
 
 const handleListening = () =>
   console.log(`Server listening on port http://localhost:${PORT}`);
